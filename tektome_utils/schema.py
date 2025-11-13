@@ -11,7 +11,7 @@ class Resource(BaseModel):
     """
 
     id: UUID = Field(..., description="The unique identifier for the resource")
-    kind: str = Field(..., description="The kind of the schema ,must be 'resource")
+    kind: str = Field(..., description="The kind of the schema, must be 'resource")
 
     @field_validator("kind")
     def validate_kind(cls, v):
@@ -27,7 +27,7 @@ class Resources(BaseModel):
     """
 
     ids: list[UUID] = Field(..., description="The unique identifier for the resource")
-    kind: str = Field(..., description="The kind of the schema ,must be 'resource[]")
+    kind: str = Field(..., description="The kind of the schema, must be 'resource[]")
 
     @field_validator("kind")
     def validate_kind(cls, v):
@@ -43,7 +43,7 @@ class Project(BaseModel):
     """
 
     id: UUID = Field(..., description="The unique identifier for the project")
-    kind: str = Field(..., description="The kind of the schema ,must be 'project'")
+    kind: str = Field(..., description="The kind of the schema, must be 'project'")
 
     @field_validator("kind")
     def validate_kind(cls, v):
@@ -59,7 +59,7 @@ class Projects(BaseModel):
     """
 
     ids: list[UUID] = Field(..., description="The unique identifier for the project")
-    kind: str = Field(..., description="The kind of the schema ,must be 'project[]'")
+    kind: str = Field(..., description="The kind of the schema, must be 'project[]'")
 
     @field_validator("kind")
     def validate_kind(cls, v):
@@ -76,7 +76,7 @@ class AttributeDefinitions(BaseModel):
 
     ids: list[UUID] = Field(..., description="The unique identifier for the attributes")
     kind: str = Field(
-        ..., description="The kind of the schema ,must be 'attribute_definition[]'"
+        ..., description="The kind of the schema, must be 'attribute_definition[]'"
     )
 
     @field_validator("kind")
