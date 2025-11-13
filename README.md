@@ -11,10 +11,17 @@ pip install git+https://github.com/tektomejp/tektome_utils.git@main
 
 ## Usage
 
-```python
-import tektome_utils
+These classes are used to convert dictionary provided by openflow input to pydantic dataclass with validation.
 
-# Your code here
+```python
+from tektome_utils import Resource
+from pydantic import validate_call
+
+
+@validate_call  # validate_call attempts to convert input dict to Resource class
+def main(resource: Resource):
+    print(f"resource is of type: {type(resource)}")  # resource is of type: <class '....Resource'>
+    return {"data": "some data"}
 ```
 
 ## Development

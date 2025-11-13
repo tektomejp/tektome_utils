@@ -1,18 +1,4 @@
-"""
-These classes are used to convert dictonary provided by openflow input to pydantic dataclass with validation.
-# Example usage:
-```
-from tektome_utils import Resource
-from pydantic import validate_call
-
-
-@validate_call  # validate_call attempts to convert input dict to Resource class
-def main(resource: Resource):
-    print(f"resource is of type: {type(resource)}")  # resource is of type: <class '....Resource'>
-    return {"data": "some data"}
-```
-
-"""
+"""Schema classes for Tektome resources and projects."""
 
 from uuid import UUID
 
