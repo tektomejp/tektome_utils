@@ -85,3 +85,32 @@ class AttributeDefinitions(BaseModel):
             raise ValueError("kind must be 'attribute_definition[]'")
 
         return v
+
+
+class Context(BaseModel):
+    """
+    Represents context configuration automatically inserted by the system.
+    Contains authentication and deployment information.
+    """
+
+    user_api_key: str = Field(
+        ...,
+        description='User\'s API key. Include as "Authorization": Bearer <key> in the header to authenticate as the current user.',
+    )
+    base_url: str = Field(
+        ..., description="Tektome's deployment base url ex: https://domain.tld"
+    )
+    execution_id: UUID = Field(
+        ..., description="Execution id used to obtain additional extraction context"
+    )
+
+    @field_validator("base_url")
+    def validate_base_url(cls, v):
+        if not v:
+            raise ValueError("base_url cannot be empty")
+
+        # Check if URL has a valid scheme (http or https)
+        if not v.startswith("http://") and not v.startswith("https://"):
+            raise ValueError("base_url must start with 'http://' or 'https://'")
+
+        return v

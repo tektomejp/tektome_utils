@@ -2,7 +2,7 @@
 
 __version__ = "0.1.0"
 
-from tektome_utils.schema import Resource, Resources, Project, Projects, AttributeDefinitions
+from tektome_utils.schema import Resource, Resources, Project, Projects, AttributeDefinitions, Context
 
 __all__ = [
     "__version__",
@@ -11,4 +11,5 @@ __all__ = [
     "Project",
     "Projects",
     "AttributeDefinitions",
+    "Context",
 ]
