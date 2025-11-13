@@ -14,6 +14,9 @@ pip install git+https://github.com/tektomejp/tektome_utils.git@main
 These classes are used to convert dictionary provided by openflow input to pydantic dataclass with validation.
 
 ```python
+# requirements:
+# git+https://github.com/tektomejp/tektome_utils.git@v0.1.0
+
 from tektome_utils import Resource
 from pydantic import validate_call
 
@@ -31,5 +34,5 @@ To install in development mode:
 ```bash
 git clone https://github.com/tektomejp/tektome_utils.git
 cd tektome_utils
-pip install -e .
+uv sync
 ```
