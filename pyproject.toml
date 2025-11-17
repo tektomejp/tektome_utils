@@ -26,11 +26,6 @@ dependencies = [
     "pydantic>=2.0.0",
 ]
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.0.0",
-    "pytest-cov>=4.0.0",
-]
 
 [project.urls]
 Homepage = "https://github.com/tektomejp/tektome_utils"
@@ -38,3 +33,9 @@ Repository = "https://github.com/tektomejp/tektome_utils"
 
 [tool.setuptools]
 packages = ["tektome_utils"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-cov>=5.0.0",
+]
