@@ -1,6 +1,18 @@
 # tektome
 Utilities for handling Tektome Resources
 
+## Available Classes
+
+- `BaseSchema` - Base class for all schemas (forbids extra fields)
+- `Resource` - Single resource with UUID and kind validation
+- `Resources` - Collection of resource UUIDs
+- `Project` - Single project with UUID and kind validation
+- `Projects` - Collection of project UUIDs
+- `AttributeDefinitions` - Collection of attribute definition UUIDs
+- `Context` - Execution context with API key, base URL, and execution ID
+- `Date` - Date value with kind validation
+- `DateTime` - DateTime value with kind validation
+
 ## Installation
 
 You can install this package directly from GitHub:
@@ -15,7 +27,7 @@ These classes are used to convert dictionary provided by openflow input to pydan
 
 ```python
 # requirements:
-# git+https://github.com/tektomejp/tektome_utils.git@v0.1.1
+# git+https://github.com/tektomejp/tektome_utils.git@v0.3.0
 
 from tektome import Resource, Context
 from pydantic import validate_call
