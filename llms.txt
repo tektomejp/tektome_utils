@@ -1,0 +1,293 @@
+# Tektome
+
+> Utilities for handling Tektome Resources
+
+## Overview
+
+Tektome is a Python package that provides strongly-typed Pydantic classes for working with Tektome resources, projects, and execution contexts. It offers robust validation and serialization for Tektome data structures.
+
+## Installation
+
+```bash
+pip install git+https://github.com/tektomejp/tektome_python.git@main
+```
+
+## Quick Start
+
+```python
+from tektome import Resource, Context
+from pydantic import validate_call
+
+@validate_call
+def main(ctx: Context, r: Resource):
+    print(f"Context: {ctx.model_dump()}")
+    print(f"Resource: {r.model_dump()}")
+    return "data to next step"
+```
+
+## Available Classes
+
+### BaseSchema
+Base class for all Tektome schemas. Forbids extra fields to prevent data corruption.
+
+**Configuration:**
+- `extra="forbid"` - Rejects any fields not defined in the model
+
+### Resource
+Represents a single Tektome resource.
+
+**Fields:**
+- `id: UUID` - The unique identifier for the resource
+- `kind: str` - Must be "resource"
+
+**Example:**
+```python
+from tektome import Resource
+
+resource = Resource(
+    id="123e4567-e89b-12d3-a456-426614174000",
+    kind="resource"
+)
+```
+
+### Resources
+Represents a collection of resource UUIDs.
+
+**Fields:**
+- `ids: list[UUID]` - List of resource UUIDs
+- `kind: str` - Must be "resource[]"
+
+**Example:**
+```python
+from tektome import Resources
+
+resources = Resources(
+    ids=["123e4567-e89b-12d3-a456-426614174000"],
+    kind="resource[]"
+)
+```
+
+### Project
+Represents a single Tektome project.
+
+**Fields:**
+- `id: UUID` - The unique identifier for the project
+- `kind: str` - Must be "project"
+
+**Example:**
+```python
+from tektome import Project
+
+project = Project(
+    id="123e4567-e89b-12d3-a456-426614174000",
+    kind="project"
+)
+```
+
+### Projects
+Represents a collection of project UUIDs.
+
+**Fields:**
+- `ids: list[UUID]` - List of project UUIDs
+- `kind: str` - Must be "project[]"
+
+**Example:**
+```python
+from tektome import Projects
+
+projects = Projects(
+    ids=["123e4567-e89b-12d3-a456-426614174000"],
+    kind="project[]"
+)
+```
+
+### AttributeDefinitions
+Represents a collection of attribute definition UUIDs.
+
+**Fields:**
+- `ids: list[UUID]` - List of attribute definition UUIDs
+- `kind: str` - Must be "attribute_definition[]"
+
+**Example:**
+```python
+from tektome import AttributeDefinitions
+
+attr_defs = AttributeDefinitions(
+    ids=["123e4567-e89b-12d3-a456-426614174000"],
+    kind="attribute_definition[]"
+)
+```
+
+### Context
+Represents the execution context for Tektome operations.
+
+**Fields:**
+- `user_api_key: str` - User's API key for authentication
+- `base_url: AnyHttpUrl` - Tektome deployment base URL (e.g., https://gateway.tektome.com)
+- `execution_id: UUID` - Execution ID for obtaining additional context
+
+**Example:**
+```python
+from tektome import Context
+
+ctx = Context(
+    user_api_key="your-api-key",
+    base_url="https://gateway.tektome.com",
+    execution_id="123e4567-e89b-12d3-a456-426614174000"
+)
+```
+
+**Authentication:**
+Include the API key in requests as:
+```python
+headers = {
+    "Authorization": f"Bearer {ctx.user_api_key}"
+}
+```
+
+### Date
+Represents a date value with kind validation.
+
+**Fields:**
+- `value: date` - The date value
+- `kind: str` - Must be "date"
+
+**Example:**
+```python
+from tektome import Date
+from datetime import date
+
+date_obj = Date(
+    value=date(2025, 11, 19),
+    kind="date"
+)
+```
+
+### DateTime
+Represents a datetime value with kind validation.
+
+**Fields:**
+- `value: datetime` - The datetime value
+- `kind: str` - Must be "datetime"
+
+**Example:**
+```python
+from tektome import DateTime
+from datetime import datetime
+
+dt = DateTime(
+    value=datetime(2025, 11, 19, 10, 30, 0),
+    kind="datetime"
+)
+```
+
+## Validation
+
+All classes use Pydantic for validation:
+
+- **UUID Validation**: Automatically converts string UUIDs to UUID objects
+- **Kind Validation**: Ensures correct type identifiers
+- **Extra Field Protection**: Rejects unexpected fields
+- **Type Safety**: Enforces correct types for all fields
+
+**Example Error:**
+```python
+# This will raise ValidationError - wrong kind
+resource = Resource(
+    id="123e4567-e89b-12d3-a456-426614174000",
+    kind="invalid"
+)
+# ValidationError: kind must be 'resource'
+
+# This will raise ValidationError - extra field
+resource = Resource(
+    id="123e4567-e89b-12d3-a456-426614174000",
+    kind="resource",
+    extra_field="not allowed"
+)
+# ValidationError: Extra inputs are not permitted
+```
+
+## Common Patterns
+
+### Using with @validate_call
+
+```python
+from tektome import Resource, Context
+from pydantic import validate_call
+
+@validate_call
+def process_resource(ctx: Context, resource: Resource):
+    """Automatically validates input types."""
+    headers = {"Authorization": f"Bearer {ctx.user_api_key}"}
+    # Make API calls using ctx.base_url and headers
+    return resource.id
+```
+
+### Working with Collections
+
+```python
+from tektome import Resources, Projects
+
+def process_multiple(resources: Resources, projects: Projects):
+    """Process multiple resources and projects."""
+    for resource_id in resources.ids:
+        print(f"Resource: {resource_id}")
+
+    for project_id in projects.ids:
+        print(f"Project: {project_id}")
+```
+
+### Serialization
+
+```python
+from tektome import Resource
+
+resource = Resource(
+    id="123e4567-e89b-12d3-a456-426614174000",
+    kind="resource"
+)
+
+# Convert to dict
+data = resource.model_dump()
+
+# Convert to JSON string
+json_str = resource.model_dump_json()
+
+# Create from dict
+resource2 = Resource(**data)
+```
+
+## Development
+
+```bash
+# Clone repository
+git clone https://github.com/tektomejp/tektome_python.git
+cd tektome_python
+
+# Install dependencies
+uv sync
+
+# Run tests
+uv run pytest
+
+# Run tests with coverage
+uv run pytest --cov=tektome
+```
+
+## Key Points for LLMs
+
+1. **Field Names**: Note that actual implementation uses `id`/`ids` (not `uuid`/`uuids`) and `user_api_key` (not `api_key`)
+2. **Kind Values**: Each class has a specific required `kind` value that must match exactly
+3. **Validation**: All classes automatically validate UUID strings and convert them to UUID objects
+4. **Extra Fields**: All classes inherit from BaseSchema which forbids extra fields
+5. **Context Usage**: Context.user_api_key should be used as `Authorization: Bearer <key>` header
+6. **Default Base URL**: The default Tektome gateway is `https://gateway.tektome.com`
+
+## Documentation
+
+Full documentation available at: https://github.com/tektomejp/tektome_python
+
+## License
+
+MIT
