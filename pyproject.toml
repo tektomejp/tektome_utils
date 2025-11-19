@@ -28,8 +28,8 @@ dependencies = [
 
 
 [project.urls]
-Homepage = "https://github.com/tektomejp/tektome_utils"
-Repository = "https://github.com/tektomejp/tektome_utils"
+Homepage = "https://github.com/tektomejp/tektome_python"
+Repository = "https://github.com/tektomejp/tektome_python"
 
 [tool.setuptools]
 packages = ["tektome"]
@@ -38,4 +38,9 @@ packages = ["tektome"]
 dev = [
     "pytest>=8.3.5",
     "pytest-cov>=5.0.0",
+]
+docs = [
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.25.0",
 ]
